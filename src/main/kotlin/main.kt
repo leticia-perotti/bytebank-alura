@@ -16,20 +16,48 @@ fun main() {
     println(contaAlex.saldo)
 
     println("Depositando conta Alex")
-    deposita(contaAlex, 50.00)
+    contaAlex.deposita(50.00)
     println(contaAlex.saldo)
-    deposita(contaFran, 70.00)
+    contaFran.deposita(70.00)
     println("Depositando conta Fran")
     println(contaFran.saldo)
-}
 
-fun deposita(conta: Conta, valor : Double){
-    conta.saldo += valor
+    println("Sacando conta Alex")
+    contaAlex.saca(100.00)
+    println(contaAlex.saldo)
+
+    println("Transferência")
+    if(contaFran.transfere(10.00, contaAlex)){
+        println("Transferencia com sucesso")
+    }else{
+        println("falso")
+    }
+    println(contaAlex.saldo)
+    println(contaFran.saldo)
 }
 class Conta{
     var titular = ""
     var numero = 0
     var saldo = 0.00
+
+    fun deposita(valor : Double){
+        saldo += valor
+    }
+    fun saca(valor: Double){
+        if(this.saldo >= valor){
+            saldo -= valor
+        }else{
+            println("Não foi possivel efetuar o saque")
+        }
+    }
+    fun transfere(valor: Double, destino: Conta): Boolean{
+        if (saldo >= valor){
+            saldo -= valor
+            destino.saldo += valor
+            return true
+        }
+        return false
+    }
 }
 
 fun testaCopiasReferencias(){
