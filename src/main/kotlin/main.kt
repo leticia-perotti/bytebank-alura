@@ -1,15 +1,12 @@
 fun main() {
     println("Bem vindo ao Bytebank")
 
-    val contaAlex = Conta()
-    contaAlex.titular = "Alex"
-    contaAlex.numero = 1000
-    contaAlex.saldo = 200.00
+    val contaAlex = Conta(titular = "Alex", numero = 1000)
+    contaAlex.deposita(200.00)
 
-    val contaFran = Conta()
-    contaFran.titular = "Fran"
-    contaFran.numero = 1001
-    contaFran.saldo = 100.00
+    val contaFran = Conta(numero =1001, titular = "Fran")
+
+    contaFran.deposita(100.00)
     println(contaFran.titular)
     println(contaFran.saldo)
     println(contaAlex.titular)
@@ -35,13 +32,22 @@ fun main() {
     println(contaAlex.saldo)
     println(contaFran.saldo)
 }
-class Conta{
-    var titular = ""
-    var numero = 0
-    var saldo = 0.00
+class Conta(
+    val titular: String,
+    val numero: Int
+    ){
 
+    var saldo = 0.00
+        private set
+
+    /*constructor(titular: String, numero: Int){
+        this.titular = titular
+        this.numero = numero
+    }*/
     fun deposita(valor : Double){
-        saldo += valor
+        if(valor> 0) {
+            saldo += valor
+        }
     }
     fun saca(valor: Double){
         if(this.saldo >= valor){
@@ -53,11 +59,21 @@ class Conta{
     fun transfere(valor: Double, destino: Conta): Boolean{
         if (saldo >= valor){
             saldo -= valor
-            destino.saldo += valor
+            destino.deposita(valor)
             return true
         }
         return false
     }
+
+
+    /*fun getSaldo(): Double{
+        return saldo
+    }
+    fun setSaldo(valor: Double){
+        if(valor > 0) {
+            saldo = valor
+        }
+    }*/
 }
 
 fun testaCopiasReferencias(){
@@ -69,11 +85,10 @@ fun testaCopiasReferencias(){
     println(numeroX)
     println(numeroY)
 
-    val contaJoao = Conta()
-    contaJoao.titular = "Joao"
+    val contaJoao = Conta("Joao", 1002)
 
-    var contaMaria = contaJoao
-    contaMaria.titular = "maria"
+    var contaMaria = Conta("Maria", 1003)
+
 
     println("conta joão ${contaJoao.titular}")
     println("conta maria ${contaMaria.titular}")
